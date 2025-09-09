@@ -1,0 +1,46 @@
+---
+- name: Remove all banners from devices
+  hosts: all
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: Remove MOTD Banner
+      cisco.ios.banner:
+        banner: motd
+        state: absent
+      register: motd_banner
+
+    - name: Print MOTD Results
+      ansible.builtin.debug:
+        var: motd_banner
+
+    - name: Remove Login Banner
+      cisco.ios.banner:
+        banner: login
+        state: absent
+      register: login_banner
+
+    - name: Print Login Results
+      ansible.builtin.debug:
+        var: login_banner
+
+    - name: Remove Exec Banner
+      cisco.ios.banner:
+        banner: exec
+        state: absent
+      register: exec_banner
+
+    - name: Print Exec Results
+      ansible.builtin.debug:
+        var: exec_banner
+
+    - name: Remove Incoming Banner
+      cisco.ios.banner:
+        banner: incoming
+        state: absent
+      register: incoming_banner
+
+    - name: Print Incoming Results
+      ansible.builtin.debug:
+        var: incoming_banner
