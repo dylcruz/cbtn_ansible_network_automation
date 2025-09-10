@@ -1,10 +1,10 @@
 ---
-ntp_server: "75.75.75.75"
+ntp_server: "87.87.87.87"
 
 ospf:
-  area: "0"
+  area: "1"
   networks:
     - "10.0.0.0 0.255.255.255"
     - "192.168.0.0 0.0.255.255"
   redistributing:
-    bgp: "65003"
+    bgp: "65002"

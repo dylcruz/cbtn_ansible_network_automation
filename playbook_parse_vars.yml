@@ -1,0 +1,9 @@
+---
+- name: Parse some var info
+  hosts: R2
+  gather_facts: no
+
+  tasks:
+    - name: Displaying var stuff
+      ansible.builtin.debug:
+        msg: "{{ hostvars[inventory_hostname].ospf.rid }}"
