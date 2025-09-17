@@ -1,0 +1,15 @@
+---
+- name: "Playbook to test conditional logic"
+  hosts: usa
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: "Gather Cisco Facts"
+      cisco.ios.ios_facts:
+        gather_subset: all
+    - name: "Print Facts"
+      ansible.builtin.debug:
+        msg: "Interface {{ item.key }} has an IP address of {{ item.value.ipv4[0].address }}"
+      loop: "{{ ansible_net_interfaces | dict2items }}"
+      when: item.value.ipv4 != []
