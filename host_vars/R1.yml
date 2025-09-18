@@ -1,3 +1,23 @@
 ---
 ospf:
   rid: "1.1.1.1"
+
+bgp:
+  asn: "65001"
+  rid: "1.1.1.1"
+  peers:
+    - neighbor: "10.0.10.2"
+      peer_asn: "65001"
+
+    - neighbor: "10.0.10.6"
+      peer_asn: "65001"
+
+    - neighbor: "10.0.10.10"
+      peer_asn: "65001"
+  networks:
+    - network: "1.1.1.1"
+      mask: "255.255.255.255"
+
+eigrp:
+  style: "named"
+  asn: "1"

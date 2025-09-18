@@ -1,3 +1,20 @@
 ---
 ospf:
   rid: "3.3.3.3"
+
+bgp:
+  asn: "65001"
+  rid: "3.3.3.3"
+  peers:
+    - neighbor: "10.0.10.9"
+      peer_asn: "65001"
+
+    - neighbor: "10.0.10.13"
+      peer_asn: "65001"
+
+    - neighbor: "10.0.10.22"
+      peer_asn: "65001"
+  networks:
+    - network: "3.3.3.3"
+      mask: "255.255.255.255"
+      
