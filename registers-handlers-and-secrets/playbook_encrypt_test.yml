@@ -1,0 +1,9 @@
+---
+- name: "Print some encrypted stuff"
+  hosts: usa
+  gather_facts: false
+
+  tasks:
+    - name: "Task 1 - Decrypt and print"
+      ansible.builtin.debug:
+        msg: "{{ group_secret }}"
