@@ -1,0 +1,26 @@
+---
+
+- name: "Play to configure EIGRP"
+  hosts: "R1"
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+    - name: "TASK 1 - push EIGRP"
+      cisco.ios.ios_config:
+        src: "eigrp.j2"
+      register: "eigrp_result"
+
+    - name: "TASK 2 - print EIGRP config"
+      ansible.builtin.debug:
+        msg: "{{ eigrp_result  }}"
+      
+    - name: "TASK 3 - verify EIGRP config"
+      cisco.ios.ios_command:
+        commands:
+          - "show run | section eigrp"
+      register: eigrp_show_output
+    
+    - name: "TASK 4 - Print show command"
+      ansible.builtin.debug:
+        msg: "{{ eigrp_show_output.stdout_lines }}"

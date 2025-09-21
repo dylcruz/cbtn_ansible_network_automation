@@ -1,0 +1,19 @@
+---
+- name: "Playbook does some EIGRP stuff"
+  hosts: "R1"
+  gather_facts: false
+  connection: "network_cli"
+
+  roles:
+    - eigrp_role
+  
+  tasks:
+    - name: "Further verify"
+      cisco.ios.ios_command:
+        commands:
+          - "show ip eigrp interfaces"
+      register: "new_output"
+
+    - name: "Print verification"
+      ansible.builtin.debug:
+        msg: "{{ new_output }}"
