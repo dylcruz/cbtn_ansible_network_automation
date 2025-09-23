@@ -1,0 +1,16 @@
+---
+- name: "VyOS Playbook"
+  hosts: "R5"
+  connection: "network_cli"
+
+  tasks:
+    - name: "Push some banner configuration to VyOS"
+      vyos.vyos.vyos_banner:
+        banner: "pre-login"
+        state: "absent"
+    
+    - name: "Push Post-Login banner to VyOS"
+      vyos.vyos.vyos_banner:
+        banner: "post-login"
+        state: "present"
+        text: "POST LOGIN BANNER"

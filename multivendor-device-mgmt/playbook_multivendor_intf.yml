@@ -1,0 +1,31 @@
+---
+- name: "Multivendor Interface Configuration Playbook"
+  hosts: "all"
+  connection: "network_cli"
+
+  tasks:
+    - name: "Configure Cisco Interfaces"
+      cisco.ios.ios_interfaces:
+        config:
+          - name: "GigabitEthernet0/0"
+            description: "MGMT Network"
+        state: "merged"
+      when: "ansible_network_os == 'cisco.ios.ios'"
+      register: "ios_command_output"
+
+    - name: "Print Cisco Command Output"
+      ansible.builtin.debug:
+        msg: "{{ ios_command_output }}"
+
+    - name: "Configure VyOS Interfaces"
+      vyos.vyos.vyos_interfaces:
+        config:
+          - name: "eth0"
+            description: "MGMT Network"
+        state: "merged"
+      when: "ansible_network_os == 'vyos.vyos.vyos'"
+      register: "vyos_command_output"
+
+    - name: "Print VyOS Command Output"
+      ansible.builtin.debug:
+        msg: "{{ vyos_command_output }}"
