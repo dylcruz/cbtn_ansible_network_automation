@@ -1,0 +1,26 @@
+---
+- name: OSPF Playbook
+  hosts: all
+  connection: network_cli
+
+  tasks:
+    - name: Push Cisco OSPF Config
+      cisco.ios.ios_ospfv2:
+        config:
+          processes:
+            - process_id: 1
+              areas:
+                - area_id: "{{ ospf.area }}"
+              default_information:
+                originate: "{{ ospf.originate }}"
+              network:
+                - address: 
+
+        state: merged
+      register: cisco_output
+      when: "ansible_network_os == 'cisco.ios.ios'"
+
+    - name: Print Cisco OSPF Config
+      ansible.builtin.debug:
+        var: cisco_output
+      when: "ansible_network_os == 'cisco.ios.ios'"

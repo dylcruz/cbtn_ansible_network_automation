@@ -1,6 +1,9 @@
 ---
 ospf:
   rid: "1.1.1.1"
+  area: 0
+  originate: true
+  
 
 bgp:
   asn: "65001"
