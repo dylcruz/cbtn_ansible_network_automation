@@ -1,6 +1,9 @@
 ---
 ospf:
   rid: "3.3.3.3"
+  networks:
+    - address: "10.0.20.0/30"
+  area: "0"
 
 bgp:
   asn: "65001"
