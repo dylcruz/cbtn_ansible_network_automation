@@ -21,7 +21,7 @@
 
     - name: "Configure VyOS OSPF"
       vyos.vyos.vyos_config:
-        src: "{{ lookup('template', 'vyos_ospf.j2') }}"
+        src: vyos_ospf.j2
       register: vyos_output
       when: "ansible_network_os == 'vyos.vyos.vyos'"
 

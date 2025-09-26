@@ -1,0 +1,8 @@
+router ospf 1
+ router-id {{ ospf.rid }}
+{% for network in ospf.networks %}
+ network {{ network.address }} {{ network.wildcard_bits }} area {{ network.area }}
+{% endfor %}
+{% if ospf.originate is defined and ospf.originate %}
+ default-information originate
+{% endif %}
