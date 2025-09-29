@@ -1,0 +1,8 @@
+set protocol bgp system-as {{ bgp.asn }}
+set protocol bgp parameters router-id {{ bgp.rid }}
+{% if bgp.peers is defined %}
+{% for peer in bgp.peers %}
+set protocols bgp neighbor {{ peer.neighbor }} address-family ipv4-unicast
+set protocols bgp neighbor {{ peer.neighbor }} remote-as {{ peer.peer_type }}
+{% endfor %}
+{% endif %}

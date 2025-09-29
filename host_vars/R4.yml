@@ -6,17 +6,28 @@ ospf:
   area: "0"
 
 bgp:
-  asn: "65001"
+  asn: 4
   rid: "4.4.4.4"
   peers:
-    - neighbor: "10.0.10.5"
-      peer_asn: "65001"
+    - neighbor: "10.0.20.5"
+      peer_type: "external"
+      peer_asn: "2"
+    - neighbor: "10.0.20.9"
+      peer_type: "external"
+      peer_asn: "3"
 
-    - neighbor: "10.0.10.17"
-      peer_asn: "65001"
+# bgp:
+#   asn: "65001"
+#   rid: "4.4.4.4"
+#   peers:
+#     - neighbor: "10.0.10.5"
+#       peer_asn: "65001"
 
-    - neighbor: "10.0.10.21"
-      peer_asn: "65001"
-  networks:
-    - network: "4.4.4.4"
-      mask: "255.255.255.255"
+#     - neighbor: "10.0.10.17"
+#       peer_asn: "65001"
+
+#     - neighbor: "10.0.10.21"
+#       peer_asn: "65001"
+#   networks:
+#     - network: "4.4.4.4"
+#       mask: "255.255.255.255"

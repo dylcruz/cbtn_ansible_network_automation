@@ -1,0 +1,42 @@
+---
+- name: "Configure BGP via Jinja2 Template"
+  hosts: all
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: "Debug VyOS Template"
+      ansible.builtin.debug:
+        var: vyos_template
+      vars:
+        vyos_template: "{{ lookup('ansible.builtin.template', 'vyos_bgp.j2') }}"
+      when: "ansible_network_os == 'vyos.vyos.vyos'"
+    
+    - name: "Debug IOS Template"
+      ansible.builtin.debug:
+        var: ios_template
+      vars:
+        ios_template: "{{ lookup('template', 'ios_bgp.j2') }}"
+      when: "ansible_network_os == 'cisco.ios.ios'"
+
+    - name: "Configure VyOS BGP"
+      vyos.vyos.vyos_config:
+        src: vyos_bgp.j2
+      register: vyos_output
+      when: "ansible_network_os == 'vyos.vyos.vyos'"
+
+    - name: "Output VyOS Config"
+      ansible.builtin.debug:
+        var: vyos_output
+      when: "ansible_network_os == 'vyos.vyos.vyos'"
+
+    - name: "Configure IOS BGP"
+      cisco.ios.ios_config:
+        src: ios_bgp.j2
+      register: ios_output
+      when: "ansible_network_os == 'cisco.ios.ios'"
+
+    - name: "Output IOS Config"
+      ansible.builtin.debug:
+        var: ios_output
+      when: "ansible_network_os == 'cisco.ios.ios'"

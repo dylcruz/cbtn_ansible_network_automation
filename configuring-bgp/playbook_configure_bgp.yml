@@ -1,0 +1,43 @@
+---
+- name: BGP Playbook
+  hosts: all
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+    - name: Push Cisco BGP Config
+      cisco.ios.ios_bgp_global:
+        config:
+          as_number: "{{ bgp.asn }}"
+          bgp:
+            router_id:
+              address: "{{ bgp.rid }}"
+          neighbors:
+            - neighbor_address: "{{ item.neighbor }}"
+              remote_as: "{{ item.peer_asn }}"
+      register: cisco_output
+      when: "ansible_network_os == 'cisco.ios.ios'"
+      loop: "{{ bgp.peers }}"
+
+    - name: Print Cisco BGP Config
+      ansible.builtin.debug:
+        var: cisco_output
+      when: "ansible_network_os == 'cisco.ios.ios'"
+    
+    - name: Push VyOS BGP Config
+      vyos.vyos.vyos_bgp_global:
+        config:
+          as_number: "{{ bgp.asn }}"
+          bgp_params:
+            router_id: "{{ bgp.rid }}"
+          neighbor:
+            - address: "{{ item.neighbor }}"
+              remote_as: "{{ item.peer_asn }}"
+      register: vyos_output
+      when: "ansible_network_os == 'vyos.vyos.vyos'"
+      loop: "{{ bgp.peers }}"
+
+    - name: Print VyOS BGP Config
+      ansible.builtin.debug:
+        var: vyos_output 
+      when: "ansible_network_os == 'vyos.vyos.vyos'"

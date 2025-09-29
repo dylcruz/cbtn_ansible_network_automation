@@ -15,30 +15,40 @@ ospf:
       wildcard_bits: "0.0.0.0"
 
 bgp:
-  asn: "65001"
+  asn: 1
   rid: "1.1.1.1"
   peers:
     - neighbor: "10.0.10.2"
-      peer_asn: "65001"
-
-    - neighbor: "10.0.10.6"
-      peer_asn: "65001"
-
-    - neighbor: "10.0.10.10"
-      peer_asn: "65001"
+      peer_asn: "2"
   networks:
-    - network: "1.1.1.1"
+    - network: "8.8.8.8"
       mask: "255.255.255.255"
 
-eigrp:
-  style: "named"
-  asn: "1"
-  rid: "1.1.1.1"
-  networks:
-    - "1.1.1.1 0.0.0.0"
+# bgp:
+#   asn: "65001"
+#   rid: "1.1.1.1"
+#   peers:
+#     - neighbor: "10.0.10.2"
+#       peer_asn: "65001"
 
-ntp:
-  servers:
-    - "11.11.11.11"
-    - "22.22.22.22"
-    - "33.33.33.33"
+#     - neighbor: "10.0.10.6"
+#       peer_asn: "65001"
+
+#     - neighbor: "10.0.10.10"
+#       peer_asn: "65001"
+#   networks:
+#     - network: "1.1.1.1"
+#       mask: "255.255.255.255"
+
+# eigrp:
+#   style: "named"
+#   asn: "1"
+#   rid: "1.1.1.1"
+#   networks:
+#     - "1.1.1.1 0.0.0.0"
+
+# ntp:
+#   servers:
+#     - "11.11.11.11"
+#     - "22.22.22.22"
+#     - "33.33.33.33"
