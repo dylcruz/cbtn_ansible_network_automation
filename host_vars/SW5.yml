@@ -1,0 +1,25 @@
+---
+vlans:
+  interfaces:
+    - interface: "GigabitEthernet1/0"
+      mode: access
+      vlan: 5
+    - interface: "GigabitEthernet0/3"
+      mode: access
+      vlan: 10
+    - interface: "GigabitEthernet0/1"
+      mode: trunk
+  
+  svis:
+    - vlan_id: 5
+      svi: "192.168.5.1 255.255.255.0"
+    - vlan_id: 10
+      svi: "192.168.10.1 255.255.255.0"
+
+  vlan:
+    - vlan_id: 5
+      name: "VLAN5"
+      shutdown: "disabled"
+    - vlan_id: 10
+      name: "VLAN10"
+      shutdown: "disabled"

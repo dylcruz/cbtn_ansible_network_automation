@@ -1,0 +1,36 @@
+---
+- name: "Configure VLANs via Jinja2 Template"
+  hosts: cisco
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: "Push IOS VLANs"
+      cisco.ios.ios_vlans:
+        config: "{{ vlans.vlan  }}"
+        state: "replaced"
+      when: "ansible_network_os == 'cisco.ios.ios'"
+      register: ios_output
+
+    - name: "Output IOS Config"
+      ansible.builtin.debug:
+        var: ios_output
+      when: "ansible_network_os == 'cisco.ios.ios'"
+
+    - name: "Debug IOS Template"
+      ansible.builtin.debug:
+        var: ios_template
+      vars:
+        ios_template: "{{ lookup('template', 'ios_vlan.j2') }}"
+      when: "ansible_network_os == 'cisco.ios.ios'"
+
+    - name: "Configure IOS VLAN SVIs and Ports"
+      cisco.ios.ios_config:
+        src: ios_vlan.j2
+      register: ios_output
+      when: "ansible_network_os == 'cisco.ios.ios'"
+
+    - name: "Output IOS Config"
+      ansible.builtin.debug:
+        var: ios_output
+      when: "ansible_network_os == 'cisco.ios.ios'"
