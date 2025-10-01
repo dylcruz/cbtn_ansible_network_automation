@@ -1,0 +1,17 @@
+---
+- name: "Configure VLANs on VyOS Devices"
+  hosts: vyos
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: "Create VLANs and Assign to Interfaces"
+      vyos.vyos.vyos_vlan:
+        aggregate: "{{ vlans }}"
+      register: vyos_output
+      vars:
+        ansible_command_timeout: 120
+
+    - name: "Print Output"
+      ansible.builtin.debug:
+        var: vyos_output

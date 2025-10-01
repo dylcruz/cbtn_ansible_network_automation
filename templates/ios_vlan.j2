@@ -8,12 +8,12 @@ interface Vlan{{ item.vlan_id }}
 {% if vlans.interfaces is defined %}
 {% for item in vlans.interfaces %}
 interface {{ item.interface }}
- switchport mode {{ item.mode }}
 {% if item.mode == 'access' %}
  switchport access vlan {{ item.vlan }}
 {% endif %}
 {% if item.mode == 'trunk' %}
  switchport trunk encapsulation dot1q
 {% endif %}
+ switchport mode {{ item.mode }}
 {% endfor %}
 {% endif %}

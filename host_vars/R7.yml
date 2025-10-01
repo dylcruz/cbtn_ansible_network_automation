@@ -1,0 +1,19 @@
+---
+vlans:
+  - address: "192.168.5.3/24"
+    interfaces:
+      - "eth2"
+    name: "VLAN5"
+    vlan_id: 5
+
+  - address: "192.168.10.3/24"
+    interfaces:
+      - "eth2"
+    name: "VLAN10"
+    vlan_id: 10
+
+  - address: "192.168.15.1/30"
+    interfaces:
+      - "eth1"
+    name: "VLAN15"
+    vlan_id: 15
