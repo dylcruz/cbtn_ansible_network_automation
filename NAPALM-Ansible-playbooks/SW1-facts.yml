@@ -1,0 +1,6 @@
+---
+- get_facts:
+    hostname: SW1
+    model: vEOS-lab
+    serial_number: 0B4C24A20CB4FC1361ECDBA2108D5543
+    vendor: Arista

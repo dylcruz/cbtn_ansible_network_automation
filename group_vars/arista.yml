@@ -1,0 +1,5 @@
+---
+ansible_user: "dylan"
+ansible_password: "password1"
+ansible_network_os: "arista.eos.eos"
+napalm_platform: "eos"

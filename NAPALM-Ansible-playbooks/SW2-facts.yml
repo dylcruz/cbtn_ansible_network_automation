@@ -1,0 +1,6 @@
+---
+- get_facts:
+    hostname: SW2
+    model: IOSv
+    serial_number: 9PW7AUZ10YL
+    vendor: Cisco
