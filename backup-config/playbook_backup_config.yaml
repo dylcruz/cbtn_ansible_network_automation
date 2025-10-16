@@ -1,0 +1,55 @@
+---
+- name: "Play 1"
+  hosts: localhost
+
+  tasks:
+    - name: "P1T1 - Collect facts about the local host"
+      ansible.builtin.setup:
+        filter:
+          - "ansible_date_time"
+
+    - name: "P1T2 - Record variable"
+      set_fact:
+        TD: "{{ ansible_date_time.date }}"
+
+    - name: "P1T3 - Create Directory"
+      ansible.builtin.file:
+        path: "backups/{{ TD }}"
+        state: directory
+      run_once: true
+
+- name: "Play 2: Backing up configuration"
+  hosts: all
+  connection: network_cli
+
+  tasks:
+    - name: "P2T1 - Pull configuration from remote devices"
+      napalm_get_facts:
+        hostname: "{{ ansible_host }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        dev_os: "{{ napalm_platform }}"
+        filter: ["config"]
+      register: result
+
+    - name: "P2T2 - Create startup config subdirectory"
+      ansible.builtin.file:
+        path: "backup-config/backups/{{ hostvars.localhost.TD }}/startup-configs"
+        state: directory
+      run_once: true
+
+    - name: "P2T3 - Create running config subdirectory"
+      ansible.builtin.file:
+        path: "backup-config/backups/{{ hostvars.localhost.TD }}/running-configs"
+        state: directory
+      run_once: true
+
+    - name: "P2T4 - Copy startup configs to disk"
+      ansible.builtin.copy:
+        content: "{{ result.ansible_facts.napalm_config.startup }}"
+        dest: "backup-config/backups/{{ hostvars.localhost.TD }}/startup-configs/{{ inventory_hostname }}-startup-config.txt"
+
+    - name: "P2T5 - Copy running configs to disk"
+      ansible.builtin.copy:
+        content: "{{ result.ansible_facts.napalm_config.running }}"
+        dest: "backup-config/backups/{{ hostvars.localhost.TD }}/running-configs/{{ inventory_hostname }}-running-config.txt"
