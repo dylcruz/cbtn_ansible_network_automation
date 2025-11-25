@@ -1,0 +1,2 @@
++username dylan privilege 15 password 0 ********
+-username dylan privilege 15 password 0 password1

@@ -1,0 +1,49 @@
+! Command: show startup-config
+! Startup-config last modified at Tue Nov 25 16:11:05 2025 by dylan
+! device: SW1 (vEOS-lab, EOS-4.32.5.1M)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+username dylan privilege 15 secret sha512 $6$2.B150csJ9FnZs/6$CPgq/Fc6oCjmaCJJMLduYpxqVfb5GU3Y7DnZsfwDl2fC2vpPhN6zX20VbbC5cA3SQbokzy07uNWBy9rmXAgrY1
+!
+management api http-commands
+   no shutdown
+!
+cdp
+   receive
+!
+no service interface inactive port-id allocation disabled
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname SW1
+!
+spanning-tree mode mstp
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+interface Ethernet1
+!
+interface Ethernet2
+!
+interface Ethernet3
+!
+interface Management1
+   ip address 10.0.0.31/24
+!
+no ip routing
+!
+router multicast
+   ipv4
+      software-forwarding kernel
+   !
+   ipv6
+      software-forwarding kernel
+!
+end
