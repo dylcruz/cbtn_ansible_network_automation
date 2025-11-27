@@ -1,0 +1,71 @@
+---
+- name: "P1 - Configure SNMP - Cisco Devices"
+  hosts: cisco
+  connection: network_cli
+
+  tasks:
+    - name: "P1T1 - Configure SNMP - Cisco Devices"
+      cisco.ios.ios_snmp_server:
+        config:
+          communities:
+            - name: mergedComm
+              rw: true
+          contact: Dylan Cruz
+          engine_id:
+            - id: AB0C5342FF0F
+              remote:
+                host: 172.16.0.12
+                udp_port: 25
+          groups:
+            - group: mergedGroup
+              version: v3
+              version_option: auth
+          file_transfer:
+            access_group: test
+            protocol:
+              - ftp
+          hosts:
+            - community_string: mergedComm
+              host: 172.16.2.9
+              informs: true
+              version: 2c
+            - community_string: mergedComm
+              host: 172.16.2.9
+          traps:
+            cef:
+              enable: true
+              inconsistency: true
+              peer_fib_state_change: true
+              peer_state_change: true
+              resource_failure: true
+            msdp: true
+            ospf:
+              cisco_specific:
+                error: true
+                lsa: true
+                retransmit: true
+                state_change:
+                  nssa_trans_change: true
+                  shamlink:
+                    interface: true
+                    neighbor: true
+              error: true
+              lsa: true
+              retransmit: true
+              state_change: true
+            syslog: true
+            tty: true
+          users:
+            - group: dev
+              username: userPaul
+              version: v1
+        state: merged
+      register: p1t1_output
+      
+    - name: "P1T2 - Print P1T1 Output"
+      ansible.builtin.debug:
+        msg: "{{ item.commands }}"
+      loop: "{{ p1t1_output.results }}"
+      loop_control:
+        label: none
+      when: item.commands is defined

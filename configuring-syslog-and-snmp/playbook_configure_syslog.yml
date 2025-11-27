@@ -1,0 +1,96 @@
+---
+- name: "P1 - Target Cisco Devices"
+  hosts: cisco
+  connection: network_cli
+
+  tasks:
+    - name: "P1T1 - Apply Syslog Hosts on default port"
+      cisco.ios.ios_logging_global:
+        config:
+          hosts:
+            - hostname: "{{ item.ip  }}"
+        state: merged
+      loop: "{{ syslog.hosts }}"
+      when: item.port is not defined
+      register: p1t1_output
+      timeout: 120
+
+    - name: "P1T2 - Apply Syslog Hosts on custom port"
+      cisco.ios.ios_logging_global:
+        config:
+          hosts:
+            - hostname: "{{ item.ip  }}"
+              transport:
+                tcp:
+                  port: "{{ item.port  }}"
+        state: merged
+      loop: "{{ syslog.hosts }}"
+      when: item.port is defined
+      register: p1t2_output
+      timeout: 120
+
+    - name: "P1T3 - Print P1T1 Output"
+      ansible.builtin.debug:
+        msg: "{{ item.commands }}"
+      loop: "{{ p1t1_output.results }}"
+      loop_control:
+        label: none
+      when: item.commands is defined
+
+    - name: "P1T4 - Print P1T2 Output"
+      ansible.builtin.debug:
+        msg: "{{ item.commands }}"
+      loop: "{{ p1t2_output.results }}"
+      loop_control:
+        label: none
+      when: item.commands is defined
+
+- name: "P2 - Target VyOS Devices"
+  hosts: vyos
+  connection: network_cli
+
+  tasks:
+  - name: "P2T1 - Apply syslog config to VyOS devices"
+    vyos.vyos.vyos_logging_global:
+      config:
+        console:
+          facilities:
+            - facility: local7
+              severity: err
+        files:
+          - path: logFile
+            archive:
+              file_num: 2
+            facilities:
+              - facility: local6
+                severity: emerg
+        hosts:
+          - hostname: 172.16.0.1
+            facilities:
+              - facility: local7
+                severity: all
+              - facility: all
+                protocol: udp
+            port: 223
+        users:
+          - username: vyos
+            facilities:
+              - facility: local7
+                severity: debug
+        global_params:
+          archive:
+            file_num: 2
+            size: 111
+          marker_interval: 111
+          preserve_fqdn: true
+      state: merged
+    register: p2t1_output
+    timeout: 120
+
+  - name: "P2T2 - Print P2T1 Output"
+    ansible.builtin.debug:
+      msg: "{{ item.commands }}"
+    loop: "{{ p2t1_output.results }}"
+    loop_control:
+      label: none
+    when: item.commands is defined
