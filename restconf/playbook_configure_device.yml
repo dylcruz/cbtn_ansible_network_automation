@@ -1,0 +1,20 @@
+---
+- name: "P1 - Configure Devices"
+  hosts: cisco
+  connection: local
+  tasks:
+    - name: "P1T1 - Configure OSPF"
+      ansible.builtin.uri:
+        url: "https://{{ ansible_host }}/restconf/data/native/router"
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        method: PUT
+        headers:
+          Accept: application/yang-data+json,application/yang-data.errors+json
+          Content-Type: application/yang-data+json
+        body_format: json
+        body: "{{ ospf_configure }}"
+        validate_certs: false
+        status_code:
+          - 200
+          - 204

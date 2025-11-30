@@ -1,22 +1,37 @@
 ---
 ntp_server: "22.22.22.22"
 
-ospf:
-  rid: "2.2.2.2"
-  networks:
-    - address: "10.0.10.0"
-      area: "0"
-      wildcard_bits: "0.0.0.3"
-    - address: "10.0.20.0"
-      area: "0"
-      wildcard_bits: "0.0.0.3"
-    - address: "10.0.20.4"
-      area: "0"
-      wildcard_bits: "0.0.0.3"
-    - address: "2.2.2.2"
-      area: "0"
-      wildcard_bits: "0.0.0.0"
- 
+# ospf:
+#   rid: "2.2.2.2"
+#   networks:
+#     - address: "10.0.10.0"
+#       area: "0"
+#       wildcard_bits: "0.0.0.3"
+#     - address: "10.0.20.0"
+#       area: "0"
+#       wildcard_bits: "0.0.0.3"
+#     - address: "10.0.20.4"
+#       area: "0"
+#       wildcard_bits: "0.0.0.3"
+#     - address: "2.2.2.2"
+#       area: "0"
+#       wildcard_bits: "0.0.0.0"
+
+ospf_configure:
+  Cisco-IOS-XE-native:router:
+    Cisco-IOS-XE-ospf:router-ospf:
+      ospf:
+        process-id:
+        - id: 1
+          network:
+          - area: 51
+            ip: 2.2.2.2
+            wildcard: 255.255.255.255
+          - area: 0
+            ip: 192.168.50.0
+            wildcard: 255.255.255.0
+          router-id: 2.2.2.2
+
 bgp:
   asn: 2
   rid: "2.2.2.2"
